@@ -2,5 +2,7 @@
   "FolderOrderSettings":[],
   "ResourceOrderSettings":[
     {"name":"Room2","order":1,"path":"rooms/Room2/Room2.yy",},
+    {"name":"Sprite_0004humano","order":3,"path":"sprites/Sprite_0004humano/Sprite_0004humano.yy",},
+    {"name":"Sprite1","order":2,"path":"sprites/Sprite1/Sprite1.yy",},
   ],
 }

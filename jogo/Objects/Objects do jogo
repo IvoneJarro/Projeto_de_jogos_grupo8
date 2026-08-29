@@ -1,3 +1,4 @@
 Este  sub-diretório é para os objects presentes no jogo, os
 vivos e não vivos, incluindo o object jogador com o código do
-personagem principal
+personagem principal, que está separado dos demais objects no
+sub diretório obj_jogador

@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REM-30 — Um jogo sobre viver com o tempo contado</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Sp ace+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=J etBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --fundo: #14141f;
+            --fundo-alt: #191927;
+            --superficie: #20202f;
+            --superficie-2: #2a2a3d;
+            --borda: rgba(205, 214, 244, 0.1);
+            --texto: #e4e6f1;
+            --texto-fraco: #8a8fa8;
+            --mauve: #cba6f7;
+            --verde: #a6e3a1;
+            --pessego: #fab387;
+            --vermelho: #f38ba8;
+            --azul: #89b4fa;
+            --amarelo: #f9e2af;
+            --cidade-longe: #2c2838;
+            --cidade-meio: #3a3448;
+            --cidade-perto: #4a4258;
+            --cidade-silhueta: #100f18;
+            --arvore-tronco: #6d5a7a;
+            --f-titulo: "Space Grotesk", sans-serif;
+            --f-corpo: "Inter", sans-serif;
+            --f-mono: "JetBrains Mono", monospace;
+            --f-pixel: "Press Start 2P", var(--f-titulo);
+            --e1: 0.5rem;
+            --e2: 1rem;
+            --e3: 1.75rem;
+            --e4: 3rem;
+            --e5: 5.5rem;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: radial-gradient(circle at 1px 1px, rgba(205, 214, 244, 0.04) 1px, transparent 0) 0 0/28px 28px, radial-gradient(ellipse at 15% -10%, rgba(203, 166, 247, 0.08), transparent 45%), radial-gradient(ellipse at 90% 8%, rgba(137, 180, 250, 0.06), transparent 40%), var(--fundo);
+            color: var(--texto);
+            font-family: var(--f-corpo);
+            line-height: 1.7;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: var(--f-titulo);
+            font-weight: 600;
+            margin: 0;
+            color: var(--texto);
+        }
+
+        a {
+            color: inherit;
+        }
+
+        code,
+        .mono {
+            font-family: var(--f-mono);
+        }
+
+        .envolucro {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 0 var(--e3);
+        }
+
+        section {
+            padding: var(--e5) 0;
+        }
+
+        section .cabecalho {
+            margin-bottom: var(--e4);
+            max-width: 60ch;
+        }
+
+        section .cabecalho .rotulo {
+            font-family: var(--f-mono);
+            font-size: 0.72rem;
+            color: var(--texto-fraco);
+            letter-spacing: 0.04em;
+            display: block;
+            margin-bottom: 0.6rem;
+        }
+
+        section .cabecalho h2 {
+            font-family: var(--f-pixel);
+            font-size: clamp(1rem, 2vw, 1.35rem);
+            line-height: 1.8;
+            letter-spacing: 0.01em;
+        }
+
+        section .cabecalho p {
+            color: var(--texto-fraco);
+            margin-top: var(--e2);
+            font-size: 0.98rem;
+        }
+
+        .revelar {
+            opacity: 0;
+            transform: translateY(14px);
+            transition: opacity 0.55s ease, transform 0.55s ease;
+        }
+
+        .revelar.visivel {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 0.5em;
+            height: 0.95em;
+            background: var(--verde);
+            vertical-align: -0.1em;
+            animation: piscar 1s step-end infinite;
+        }
+
+        @keyframes piscar {
+
+            0%,
+            49% {
+                opacity: 1;
+            }
+
+            50%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .cantos {
+            position: relative;
+        }
+
+        .cantos::before,
+        .cantos::after {
+            content: "";
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border: 1.5px solid var(--superficie-2);
+            transition: border-color 0.25s ease;
+            pointer-events: none;
+        }
+
+        .cantos::before {
+            top: -1px;
+            left: -1px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .cantos::after {
+            bottom: -1px;
+            right: -1px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .cantos:hover::before,
+        .cantos:hover::after {
+            border-color: var(--mauve);
+        }
+
+        #topo {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: rgba(20, 20, 31, 0.85);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--borda);
+        }
+
+        #topo .barra {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 1rem var(--e3);
+        }
+
+        #topo .marca {
+            font-family: var(--f-pixel);
+            font-weight: 400;
+            font-size: 0.72rem;
+            letter-spacing: 0.02em;
+        }
+
+        #topo .marca span {
+            color: var(--mauve);
+        }
+
+        #topo nav {
+            display: flex;
+            gap: 1.6rem;
+        }
+
+        #topo nav a {
+            font-size: 0.82rem;
+            color: var(--texto-fraco);
+            text-decoration: none;
+            position: relative;
+            padding-bottom: 3px;
+        }
+
+        #topo nav a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 1.5px;
+            background: var(--mauve);
+            transition: width 0.25s ease;
+        }
+
+        #topo nav a:hover {
+            color: var(--texto);
+        }
+
+        #topo nav a:hover::after {
+            width: 100%;
+        }
+
+        .status-online {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--f-mono);
+            font-size: 0.65rem;
+            color: var(--texto-fraco);
+        }
+
+        .led {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--verde);
+            box-shadow: 0 0 6px var(--verde);
+            animation: piscar-led 1.8s ease-in-out infinite;
+        }
+
+        @keyframes piscar-led {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        .faixa-skyline {
+            position: relative;
+            line-height: 0;
+            background: linear-gradient(180deg, var(--fundo-alt), var(--fundo));
+            border-bottom: 1px solid var(--borda);
+            overflow: hidden;
+        }
+
+        .faixa-skyline svg {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .faixa-skyline .veu {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(20, 20, 31, 0) 55%, var(--fundo) 100%);
+            pointer-events: none;
+        }
+
+        #hero {
+            padding-top: var(--e4);
+        }
+
+        .grade-hero {
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: var(--e4);
+            align-items: center;
+        }
+
+        #hero .rotulo {
+            font-family: var(--f-mono);
+            font-size: 0.75rem;
+            color: var(--mauve);
+            letter-spacing: 0.06em;
+        }
+
+        #hero h1 {
+            font-family: var(--f-pixel);
+            font-size: clamp(1.05rem, 2.5vw, 1.6rem);
+            line-height: 1.85;
+            margin-top: var(--e2);
+            letter-spacing: 0.01em;
+        }
+
+        #hero .linha-sub {
+            color: var(--texto-fraco);
+            max-width: 48ch;
+            margin-top: var(--e3);
+            font-size: 1.02rem;
+        }
+
+        #hero .linha-sub .censurado {
+            font-family: var(--f-mono);
+            background: var(--texto-fraco);
+            color: transparent;
+            border-radius: 2px;
+            padding: 0 3px;
+        }
+
+        .botoes-hero {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: var(--e3);
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            font-size: 0.86rem;
+            font-weight: 500;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-block;
+            border: 1px solid transparent;
+            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primario {
+            background: var(--mauve);
+            color: #1a1425;
+        }
+
+        .btn-primario:hover {
+            background: #d8bdfb;
+        }
+
+        .btn-secundario {
+            border-color: var(--borda);
+            color: var(--texto);
+        }
+
+        .btn-secundario:hover {
+            border-color: var(--mauve);
+            color: var(--mauve);
+        }
+
+        .btn .cmd {
+            font-family: var(--f-mono);
+            opacity: 0.6;
+            margin-right: 5px;
+        }
+
+        .janela {
+            background: var(--fundo-alt);
+            border: 1px solid var(--borda);
+            border-radius: 10px;
+            box-shadow: 0 24px 50px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            transition: border-color 0.3s ease;
+        }
+
+        .janela:hover {
+            border-color: rgba(203, 166, 247, 0.3);
+        }
+
+        .janela .barra-titulo {
+            background: var(--superficie);
+            padding: 0.6rem 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            border-bottom: 1px solid var(--borda);
+        }
+
+        .pontos {
+            display: flex;
+            gap: 6px;
+            flex: none;
+        }
+
+        .pontos span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: block;
+        }
+
+        .p-verm {
+            background: var(--vermelho);
+        }
+
+        .p-amar {
+            background: var(--amarelo);
+        }
+
+        .p-verd {
+            background: var(--verde);
+        }
+
+        .nome-arquivo {
+            font-family: var(--f-mono);
+            font-size: 0.7rem;
+            color: var(--texto-fraco);
+        }
+
+        .status-arquivo {
+            margin-left: auto;
+            font-family: var(--f-mono);
+            font-size: 0.62rem;
+            color: var(--texto-fraco);
+        }
+
+        .janela .conteudo {
+            padding: var(--e3);
+        }
+
+        #hero .boot {
+            font-family: var(--f-mono);
+            color: var(--texto-fraco);
+            font-size: 0.74rem;
+            margin-bottom: var(--e2);
+            min-height: 4em;
+        }
+
+        #hero .boot div {
+            margin-bottom: 2px;
+        }
+
+        #hero .boot .ok {
+            color: var(--verde);
+        }
+
+        .bloco-codigo {
+            font-family: var(--f-mono);
+            font-size: 0.84rem;
+            overflow-x: auto;
+        }
+
+        .linha-codigo {
+            white-space: pre;
+            padding: 1px 8px;
+            margin: 0 -8px;
+            border-radius: 4px;
+            transition: background 0.2s ease, transform 0.15s ease;
+        }
+
+        .linha-codigo:hover {
+            background: var(--superficie);
+            transform: translateX(3px);
+        }
+
+        .kw {
+            color: var(--mauve);
+        }
+
+        .str {
+            color: var(--verde);
+        }
+
+        .num {
+            color: var(--pessego);
+        }
+
+        .tipo {
+            color: var(--amarelo);
+        }
+
+        .com {
+            color: var(--texto-fraco);
+            font-style: italic;
+        }
+
+        .prop {
+            color: var(--azul);
+        }
+
+        .fn {
+            color: var(--pessego);
+        }
+
+        .cartao-vital {
+            margin-top: var(--e3);
+            background: var(--fundo-alt);
+            border: 1px solid var(--borda);
+            border-radius: 10px;
+            padding: var(--e3);
+            display: flex;
+            align-items: center;
+            gap: var(--e3);
+            transition: border-color 0.25s ease, transform 0.25s ease;
+        }
+
+        .cartao-vital:hover {
+            border-color: rgba(166, 227, 161, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .cartao-vital:hover .valor-anos {
+            text-shadow: 0 0 20px rgba(166, 227, 161, 0.6);
+        }
+
+        .valor-anos {
+            font-family: var(--f-titulo);
+            font-size: 2.4rem;
+            color: var(--verde);
+            text-shadow: 0 0 14px rgba(166, 227, 161, 0.35);
+            flex: none;
+        }
+
+        .valor-anos span {
+            display: block;
+            font-family: var(--f-mono);
+            font-size: 0.62rem;
+            color: var(--texto-fraco);
+            margin-top: 4px;
+            max-width: 8ch;
+        }
+
+        .traco-osc {
+            flex: 1;
+            height: 46px;
+        }
+
+        .traco-osc path {
+            fill: none;
+            stroke: var(--verde);
+            stroke-width: 2;
+            filter: drop-shadow(0 0 4px rgba(166, 227, 161, 0.5));
+            stroke-dasharray: 340;
+            stroke-dashoffset: 340;
+            animation: desenhar 2.4s ease-in-out infinite;
+        }
+
+        @keyframes desenhar {
+            0% {
+                stroke-dashoffset: 340;
+            }
+
+            55% {
+                stroke-dashoffset: 0;
+            }
+
+            100% {
+                stroke-dashoffset: -340;
+            }
+        }
+
+        .tela-jogo {
+            aspect-ratio: 16/8.4;
+            position: relative;
+            background: radial-gradient(circle at 75% 20%, rgba(137, 180, 250, 0.12), transparent 45%), linear-gradient(180deg, #232336, #16161f 75%);
+            overflow: hidden;
+        }
+
+        .tela-jogo::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.12) 0px, rgba(0, 0, 0, 0.12) 1px, transparent 1px, transparent 3px);
+            opacity: 0.4;
+        }
+
+        .predio {
+            position: absolute;
+            bottom: 0;
+            background: #20202f;
+            border-top: 2px solid rgba(205, 214, 244, 0.12);
+        }
+
+        .predio.janelas {
+            background-image: repeating-linear-gradient(90deg, rgba(137, 180, 250, 0.16) 0 2px, transparent 2px 12px), repeating-linear-gradient(0deg, rgba(137, 180, 250, 0.16) 0 2px, transparent 2px 15px);
+        }
+
+        .fio-jogo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .fio-jogo path {
+            fill: none;
+            stroke: rgba(20, 20, 31, 0.85);
+            stroke-width: 1.4;
+        }
+
+        .poste-jogo {
+            position: absolute;
+            bottom: 0;
+            width: 2px;
+            background: var(--cidade-silhueta);
+        }
+
+        .poste-jogo::before {
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--amarelo);
+            box-shadow: 0 0 9px var(--amarelo);
+        }
+
+        .cartaz-jogo {
+            position: absolute;
+            width: 20px;
+            height: 15px;
+            background: var(--superficie-2);
+            border: 1px solid var(--borda);
+            border-radius: 2px;
+        }
+
+        .cartaz-jogo::before {
+            content: "";
+            position: absolute;
+            inset: 3px;
+            border: 1px solid var(--mauve);
+            opacity: 0.55;
+        }
+
+        .arvore-jogo {
+            position: absolute;
+            bottom: 0;
+        }
+
+        .glitch {
+            position: absolute;
+            width: 64px;
+            height: 128px;
+            bottom: 0;
+            left: 44%;
+            background: repeating-linear-gradient(45deg, var(--mauve) 0 4px, transparent 4px 9px);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            opacity: 0.75;
+        }
+
+        .grade-sprites {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--e2);
+        }
+
+        .cartao-sprite {
+            background: var(--fundo-alt);
+            border: 1px solid var(--borda);
+            border-radius: 10px;
+            padding: var(--e3);
+            text-align: center;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .cartao-sprite:hover {
+            border-color: var(--acento, var(--mauve));
+            transform: translateY(-4px);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .espaco-sprite-grande {
+            margin: 0 auto var(--e2);
+            width: 100%;
+            max-width: 140px;
+            aspect-ratio: 3/4;
+            border: 2px dashed var(--acento, var(--mauve));
+            border-radius: 8px;
+            background: rgba(228, 230, 241, 0.04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--e1);
+            font-family: var(--f-mono);
+            font-size: 0.62rem;
+            color: var(--acento, var(--mauve));
+            transition: background 0.2s ease;
+        }
+
+        .cartao-sprite:hover .espaco-sprite-grande {
+            background: rgba(228, 230, 241, 0.09);
+        }
+
+        .cartao-sprite h3 {
+            font-size: 0.98rem;
+            margin-top: 4px;
+        }
+
+        .hud {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(24, 24, 37, 0.75);
+            border: 1px solid var(--borda);
+            border-radius: 16px;
+            padding: 4px 10px 4px 4px;
+        }
+
+        .hud .coracao-mini {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 1.4px solid var(--verde);
+            color: var(--verde);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.55rem;
+            font-family: var(--f-mono);
+        }
+
+        .hud .trilho-mini {
+            width: 70px;
+            height: 6px;
+            border-radius: 5px;
+            background: rgba(205, 214, 244, 0.12);
+            overflow: hidden;
+        }
+
+        .hud .trilho-mini i {
+            display: block;
+            height: 100%;
+            width: 38%;
+            background: var(--verde);
+        }
+
+        .caixa-dialogo {
+            position: absolute;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            background: rgba(24, 24, 37, 0.94);
+            border: 1px solid var(--superficie-2);
+            border-radius: 6px;
+            padding: 0.65rem 0.85rem;
+            font-family: var(--f-mono);
+            font-size: 0.7rem;
+            transition: border-color 0.25s ease;
+        }
+
+        .caixa-dialogo:hover {
+            border-color: var(--mauve);
+        }
+
+        .caixa-dialogo .quem {
+            display: block;
+            color: var(--azul);
+            font-size: 0.58rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+        }
+
+        .legenda-gameplay {
+            padding: 0.9rem var(--e3) 1rem;
+            color: var(--texto-fraco);
+            font-size: 0.85rem;
+        }
+
+        .legenda-gameplay .mono {
+            color: var(--texto-fraco);
+            font-size: 0.78rem;
+        }
+
+        .passos-loop {
+            margin-top: var(--e3);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--e2);
+        }
+
+        .passo {
+            background: var(--fundo-alt);
+            border: 1px solid var(--borda);
+            border-radius: 8px;
+            padding: var(--e2);
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .passo:hover {
+            transform: translateY(-4px);
+            border-color: rgba(250, 179, 135, 0.4);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+        }
+
+        .passo .titulo-passo {
+            font-family: var(--f-titulo);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .passo .titulo-passo .mono {
+            color: var(--pessego);
+            font-size: 0.85rem;
+            transition: color 0.25s ease;
+        }
+
+        .passo:hover .titulo-passo .mono {
+            color: var(--verde);
+        }
+
+        .passo p {
+            color: var(--texto-fraco);
+            font-size: 0.82rem;
+            margin-top: 8px;
+        }
+
+        .linha-tempo {
+            position: relative;
+            padding-left: 44px;
+            margin-top: var(--e2);
+        }
+
+        .linha-tempo::before {
+            content: "";
+            position: absolute;
+            left: 14px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: var(--superficie-2);
+        }
+
+        .marco {
+            position: relative;
+            margin-bottom: var(--e3);
+            padding: 0.4rem 0.6rem;
+            margin-left: -0.6rem;
+            border-radius: 8px;
+            transition: background 0.25s ease, transform 0.25s ease;
+        }
+
+        .marco::before {
+            content: "";
+            position: absolute;
+            left: -26px;
+            top: 10px;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: var(--cor-marco, var(--mauve));
+            box-shadow: 0 0 0 4px var(--fundo);
+            z-index: 2;
+            transition: box-shadow 0.25s ease, transform 0.25s ease;
+        }
+
+        .marco:hover {
+            background: var(--fundo-alt);
+            transform: translateX(4px);
+        }
+
+        .marco:hover::before {
+            transform: scale(1.3);
+            box-shadow: 0 0 0 4px var(--fundo), 0 0 14px var(--cor-marco, var(--mauve));
+        }
+
+        .marco .cabecalho-marco {
+            display: flex;
+            align-items: baseline;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .marco .tag {
+            font-family: var(--f-mono);
+            font-size: 0.68rem;
+            color: var(--cor-marco, var(--mauve));
+        }
+
+        .marco h3 {
+            font-size: 1.15rem;
+        }
+
+        .marco p {
+            color: var(--texto-fraco);
+            font-size: 0.94rem;
+            margin-top: 0.5rem;
+            max-width: 66ch;
+        }
+
+        .grade-personagens {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--e3);
+        }
+
+        .ficha-personagem {
+            background: var(--fundo-alt);
+            border: 1px solid var(--borda);
+            border-radius: 10px;
+            padding: var(--e3);
+            display: flex;
+            gap: var(--e2);
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .ficha-personagem:hover {
+            border-color: var(--acento, var(--mauve));
+            transform: translateY(-4px);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .retrato {
+            flex: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            background: var(--superficie);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .retrato svg {
+            width: 34px;
+            height: 34px;
+            color: var(--texto-fraco);
+            transition: color 0.25s ease, transform 0.25s ease;
+        }
+
+        .ficha-personagem:hover .retrato {
+            background: var(--superficie-2);
+        }
+
+        .ficha-personagem:hover .retrato svg {
+            color: var(--acento, var(--mauve));
+            transform: scale(1.1);
+        }
+
+        .dados-personagem h3 {
+            font-size: 1.1rem;
+        }
+
+        .dados-personagem p {
+            color: var(--texto-fraco);
+            font-size: 0.88rem;
+            margin-top: 0.6rem;
+        }
+
+        .tag-classe {
+            display: inline-block;
+            font-family: var(--f-mono);
+            font-size: 0.68rem;
+            background: var(--superficie);
+            color: var(--texto-fraco);
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-top: 4px;
+            transition: background 0.25s ease, color 0.25s ease;
+        }
+
+        .ficha-personagem:hover .tag-classe {
+            background: var(--acento, var(--mauve));
+            color: #14141f;
+        }
+
+        .badge {
+            font-family: var(--f-mono);
+            font-size: 0.6rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            border: 1px solid;
+            margin-left: 6px;
+            transition: transform 0.2s ease;
+        }
+
+        .ficha-personagem:hover .badge {
+            transform: scale(1.08);
+        }
+
+        .badge-hostil {
+            color: var(--vermelho);
+            border-color: var(--vermelho);
+        }
+
+        .badge-aliado {
+            color: var(--verde);
+            border-color: var(--verde);
+        }
+
+        .badge-jogavel {
+            color: var(--azul);
+            border-color: var(--azul);
+        }
+
+        .badge-final {
+            color: var(--pessego);
+            border-color: var(--pessego);
+        }
+
+        .grade-mecanicas {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--e2);
+        }
+
+        .cartao-mecanica {
+            background: var(--fundo-alt);
+            border: 1px solid var(--borda);
+            border-radius: 10px;
+            padding: var(--e3);
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .cartao-mecanica:hover {
+            border-color: var(--acento, var(--azul));
+            transform: translateY(-4px);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .cartao-mecanica .cabecalho-mecanica {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .cartao-mecanica .fn-titulo {
+            font-family: var(--f-mono);
+            font-size: 0.78rem;
+            color: var(--acento, var(--pessego));
+            transition: color 0.25s ease;
+        }
+
+        .conceito {
+            font-family: var(--f-mono);
+            font-size: 0.58rem;
+            letter-spacing: 0.04em;
+            padding: 2px 7px;
+            border-radius: 10px;
+            border: 1px solid var(--acento, var(--pessego));
+            color: var(--acento, var(--pessego));
+            flex: none;
+        }
+
+        .cartao-mecanica h3 {
+            font-size: 1.02rem;
+            margin-top: 10px;
+        }
+
+        .cartao-mecanica p {
+            color: var(--texto-fraco);
+            font-size: 0.86rem;
+            margin-top: 8px;
+        }
+
+        #rodape {
+            position: relative;
+            padding: 0;
+            border-top: 1px solid var(--borda);
+            overflow: hidden;
+        }
+
+        #rodape .faixa-skyline {
+            border-bottom: none;
+        }
+
+        #rodape .conteudo-rodape {
+            padding: var(--e4) 0 var(--e4);
+            position: relative;
+        }
+
+        #rodape .linha-rodape {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--e2);
+        }
+
+        #rodape .creditos {
+            font-size: 0.85rem;
+            color: var(--texto-fraco);
+        }
+
+        #rodape .assinatura {
+            font-family: var(--f-mono);
+            font-size: 0.72rem;
+            color: var(--texto-fraco);
+        }
+
+        #rodape .assinatura .prompt {
+            color: var(--verde);
+        }
+
+        h1,
+        h2,
+        h3 {
+            text-shadow: 0 0 12px rgba(203, 166, 247, 0.25);
+        }
+
+        @media (max-width: 800px) {
+            .grade-hero {
+                grid-template-columns: 1fr;
+            }
+
+            .passos-loop {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grade-personagens {
+                grid-template-columns: 1fr;
+            }
+
+            .grade-sprites {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grade-mecanicas {
+                grid-template-columns: 1fr;
+            }
+
+            #topo nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header id="topo">
+        <div class="barra">
+            <div class="marca">REM<span>-30</span></div>
+            <nav> <a href="#gameplay">Gameplay</a> <a href="#premissa">Premissa</a> <a
+                    href="#personagens">Personagens</a> <a href="#sprites">Sprites</a> <a
+                    href="#mecanicas">Mecânicas</a> </nav>
+            <div class="status-online"><span class="led"></span> sistema ativo</div>
+        </div>
+    </header>
+    <div class="faixa-skyline"> <svg viewBox="0 0 1400 220" preserveAspectRatio="xMidYMax slice"
+            shape-rendering="crispEdges">
+            <rect x="0" y="0" width="1400" height="220" fill="none" />
+            <path
+                d="M0,205 Q60,180 130,198 T260,192 Q300,150 330,196 T420,200 Q470,140 510,198 T620,194 Q660,120 700,198 T810,196 Q850,150 890,198 T1000,200 Q1050,150 1100,198 T1220,196 Q1280,170 1340,198 T1400,200 L1400,220 L0,220 Z"
+                fill="var(--cidade-longe)" opacity="0.6" />
+            <g fill="var(--cidade-meio)">
+                <rect x="15" y="70" width="90" height="140" />
+                <rect x="115" y="110" width="60" height="100" />
+                <rect x="205" y="40" width="70" height="170" />
+                <rect x="300" y="95" width="55" height="115" />
+                <rect x="470" y="20" width="80" height="190" />
+                <rect x="620" y="80" width="65" height="130" />
+                <rect x="760" y="55" width="75" height="155" />
+                <rect x="900" y="100" width="60" height="110" />
+                <rect x="1010" y="35" width="85" height="175" />
+                <rect x="1160" y="90" width="60" height="120" />
+            </g>
+            <g fill="var(--cidade-perto)">
+                <rect x="0" y="130" width="140" height="90" />
+                <rect x="150" y="150" width="200" height="70" />
+                <rect x="365" y="90" width="95" height="130" />
+                <rect x="560" y="140" width="230" height="80" />
+                <rect x="800" y="100" width="90" height="120" />
+                <rect x="970" y="150" width="220" height="70" />
+                <rect x="1225" y="60" width="90" height="160" />
+            </g>
+            <g fill="rgba(137,180,250,0.35)">
+                <rect x="20" y="145" width="8" height="8" />
+                <rect x="40" y="145" width="8" height="8" />
+                <rect x="60" y="145" width="8" height="8" />
+                <rect x="20" y="165" width="8" height="8" />
+                <rect x="60" y="165" width="8" height="8" />
+                <rect x="170" y="170" width="8" height="8" />
+                <rect x="200" y="170" width="8" height="8" />
+                <rect x="230" y="170" width="8" height="8" />
+                <rect x="260" y="170" width="8" height="8" />
+                <rect x="380" y="110" width="7" height="7" />
+                <rect x="400" y="110" width="7" height="7" />
+                <rect x="380" y="130" width="7" height="7" />
+                <rect x="580" y="160" width="8" height="8" />
+                <rect x="610" y="160" width="8" height="8" />
+                <rect x="700" y="160" width="8" height="8" />
+                <rect x="750" y="160" width="8" height="8" />
+                <rect x="815" y="120" width="7" height="7" />
+                <rect x="815" y="140" width="7" height="7" />
+                <rect x="990" y="170" width="8" height="8" />
+                <rect x="1020" y="170" width="8" height="8" />
+                <rect x="1120" y="170" width="8" height="8" />
+                <rect x="1240" y="85" width="7" height="7" />
+                <rect x="1265" y="85" width="7" height="7" />
+                <rect x="1240" y="105" width="7" height="7" />
+            </g>
+            <rect x="245" y="150" width="30" height="22" rx="1" fill="var(--superficie-2)" stroke="var(--borda)" />
+            <rect x="251" y="155" width="18" height="12" fill="none" stroke="var(--mauve)" opacity="0.6" />
+            <g stroke="var(--cidade-silhueta)" stroke-width="3">
+                <line x1="100" y1="220" x2="100" y2="150" />
+                <line x1="430" y1="220" x2="430" y2="145" />
+                <line x1="750" y1="220" x2="750" y2="150" />
+                <line x1="1080" y1="220" x2="1080" y2="148" />
+            </g>
+            <g fill="var(--amarelo)" opacity="0.85">
+                <circle cx="100" cy="147" r="4" />
+                <circle cx="430" cy="142" r="4" />
+                <circle cx="750" cy="147" r="4" />
+                <circle cx="1080" cy="145" r="4" />
+            </g>
+            <path d="M100,150 Q265,120 430,145 Q590,120 750,150 Q915,118 1080,148" fill="none"
+                stroke="var(--cidade-silhueta)" stroke-width="1.5" />
+            <g stroke="var(--cidade-silhueta)" stroke-width="3" fill="none">
+                <path d="M520,220 L520,160 L500,140 M520,180 L545,158" />
+            </g>
+            <g stroke="var(--cidade-silhueta)" stroke-width="4">
+                <line x1="900" y1="220" x2="900" y2="165" />
+                <line x1="960" y1="220" x2="960" y2="165" />
+                <line x1="900" y1="165" x2="960" y2="165" />
+                <line x1="912" y1="165" x2="908" y2="200" />
+                <line x1="948" y1="165" x2="944" y2="200" />
+            </g>
+            <g>
+                <path d="M1290,220 C1285,150 1300,120 1295,60 C1293,50 1280,45 1278,60 C1274,120 1288,150 1283,220 Z"
+                    fill="var(--arvore-tronco)" />
+                <g fill="var(--mauve)" opacity="0.9">
+                    <circle cx="1250" cy="55" r="30" />
+                    <circle cx="1300" cy="35" r="38" />
+                    <circle cx="1345" cy="55" r="32" />
+                    <circle cx="1320" cy="85" r="34" />
+                    <circle cx="1265" cy="90" r="28" />
+                </g>
+                <g fill="var(--arvore-tronco)" opacity="0.5">
+                    <circle cx="1300" cy="45" r="20" />
+                    <circle cx="1330" cy="70" r="16" />
+                </g>
+            </g>
+        </svg>
+        <div class="veu"></div>
+    </div>
+    <section id="hero">
+        <div class="envolucro">
+            <div class="grade-hero">
+                <div class="revelar"> <span class="rotulo">// projeto de jogos · turma 113</span>
+                    <h1>Numa vida de trinta anos, alguém decidiu descobrir por quê.</h1>
+                    <p class="linha-sub">REM-30 é um jogo narrativo sobre um pesquisador que atravessa um portal, acorda
+                        num laboratório abandonado e descobre os registros de um projeto chamado <span
+                            class="censurado">██████████</span> — a verdadeira razão pela qual ninguém, na sua
+                        sociedade, vive além dos trinta.</p>
+                    <div class="botoes-hero"> <a class="btn btn-primario" href="#gameplay"><span class="cmd">$</span>ver
+                            gameplay</a> <a class="btn btn-secundario" href="#premissa">Ler a premissa</a> </div>
+                    <div class="cartao-vital">
+                        <div class="valor-anos">30<span>anos restantes</span></div> <svg class="traco-osc"
+                            viewBox="0 0 300 60" preserveAspectRatio="none">
+                            <path d="M0,32 L60,32 L72,10 L84,52 L96,32 L140,32 L152,20 L164,44 L176,32 L300,32" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="janela revelar">
+                    <div class="barra-titulo">
+                        <div class="pontos"><span class="p-verm"></span><span class="p-amar"></span><span
+                                class="p-verd"></span></div> <span class="nome-arquivo">bash — ~/rem-30</span>
+                    </div>
+                    <div class="conteudo">
+                        <div class="boot" id="boot"></div>
+                        <div class="bloco-codigo">
+                            <div class="linha-codigo"><span class="kw">struct</span> Sujeito001 {</div>
+                            <div class="linha-codigo">&nbsp;&nbsp;<span class="prop">idade</span>: <span
+                                    class="tipo">int</span> = <span class="num">27</span>;</div>
+                            <div class="linha-codigo">&nbsp;&nbsp;<span class="prop">expectativa_vida</span>: <span
+                                    class="tipo">int</span> = <span class="num">30</span>; <span class="com">// anos, e
+                                    caindo</span></div>
+                            <div class="linha-codigo">&nbsp;&nbsp;<span class="prop">profissao</span>: <span
+                                    class="tipo">string</span> = <span class="str">"pesquisador em
+                                    bioinformática"</span>;</div>
+                            <div class="linha-codigo">}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="gameplay">
+        <div class="envolucro">
+            <div class="cabecalho revelar"> <span class="rotulo">Demonstração</span>
+                <h2>Como se joga</h2>
+                <p>Cada fase mistura exploração de ambientes que começam a "quebrar" — sinal de que nada ali é real —
+                    com confrontos resolvidos por lógica, não por força.</p>
+            </div>
+            <div class="janela revelar">
+                <div class="barra-titulo">
+                    <div class="pontos"><span class="p-verm"></span><span class="p-amar"></span><span
+                            class="p-verd"></span></div> <span class="nome-arquivo">npm run dev — localhost:3000</span>
+                    <span class="status-arquivo">build de teste</span>
+                </div>
+                <div class="tela-jogo"> <svg class="fio-jogo" viewBox="0 0 1000 300" preserveAspectRatio="none">
+                        <path d="M90,190 Q400,140 720,185" />
+                    </svg>
+                    <div class="poste-jogo" style="left:9%; height:38%;"></div>
+                    <div class="poste-jogo" style="left:72%; height:34%;"></div>
+                    <div class="predio janelas" style="width:12%; height:55%; left:2%;"></div>
+                    <div class="predio janelas" style="width:10%; height:38%; left:15%;"></div>
+                    <div class="cartaz-jogo" style="left:20%; bottom:20%;"></div>
+                    <div class="predio janelas" style="width:9%; height:62%; left:82%;"></div>
+                    <div class="predio" style="width:11%; height:44%; left:92%;"></div> <svg class="arvore-jogo"
+                        width="60" height="90" viewBox="0 0 60 90" style="right:0; bottom:0; left:auto;">
+                        <path d="M32,90 C29,60 34,45 31,20 C30,15 26,15 27,20 C24,45 30,60 27,90 Z"
+                            fill="var(--arvore-tronco)" />
+                        <circle cx="20" cy="22" r="13" fill="var(--mauve)" opacity="0.9" />
+                        <circle cx="38" cy="14" r="15" fill="var(--mauve)" opacity="0.9" />
+                        <circle cx="46" cy="30" r="12" fill="var(--mauve)" opacity="0.9" />
+                    </svg>
+                    <div class="glitch"></div>
+                    <div class="hud">
+                        <div class="coracao-mini">♥</div>
+                        <div class="trilho-mini"><i></i></div>
+                    </div>
+                    <div class="caixa-dialogo"> <span class="quem">terminal do laboratório</span> <span
+                            class="kw">if</span> (memoria_recuperada) { revelarVerdade(); } <span class="kw">else</span>
+                        { manterHibernacao(); } </div>
+                </div>
+                <p class="legenda-gameplay">A estrutura pixelada perto do parque ainda aparece antes da hora — é ali que
+                    a simulação começa a desmoronar.</p>
+            </div>
+            <div class="passos-loop">
+                <div class="passo revelar">
+                    <div class="titulo-passo">Explorar <span class="mono">()</span></div>
+                    <p>Percorrer a cidade simulada e o laboratório, procurando registros e pontos onde a realidade
+                        falha.</p>
+                </div>
+                <div class="passo revelar">
+                    <div class="titulo-passo">Investigar <span class="mono">()</span></div>
+                    <p>Acessar terminais e arquivos para reunir provas da conspiração por trás da hibernação.</p>
+                </div>
+                <div class="passo revelar">
+                    <div class="titulo-passo">Decidir <span class="mono">()</span></div>
+                    <p>Resolver confrontos com robôs guardiões através de escolhas condicionais — o "if — else" da
+                        história.</p>
+                </div>
+                <div class="passo revelar">
+                    <div class="titulo-passo">Avançar <span class="mono">()</span></div>
+                    <p>Cada decisão certa aproxima o protagonista do computador central que controla toda a simulação.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="premissa">
+        <div class="envolucro">
+            <div class="cabecalho revelar"> <span class="rotulo">A história</span>
+                <h2>Premissa</h2>
+                <p>O contexto que dá origem ao jogo, revelado aos poucos conforme o jogador avança.</p>
+            </div>
+            <div class="linha-tempo">
+                <div class="marco revelar" style="--cor-marco: var(--mauve);">
+                    <div class="cabecalho-marco"><span class="tag">#01</span>
+                        <h3>Uma vida inteira em trinta anos</h3>
+                    </div>
+                    <p>O protagonista tem 27 anos e vive numa sociedade onde a expectativa de vida média é de apenas 30.
+                        Por isso, grande parte da população abandona estudos e trabalho para aproveitar o pouco tempo
+                        que resta.</p>
+                </div>
+                <div class="marco revelar" style="--cor-marco: var(--azul);">
+                    <div class="cabecalho-marco"><span class="tag">#02</span>
+                        <h3>Trabalhar até o fim</h3>
+                    </div>
+                    <p>Movido pela vontade de ajudar as próximas gerações, ele decide passar seus últimos anos numa
+                        empresa de bioinformática, acreditando que suas pesquisas podem mudar esse destino.</p>
+                </div>
+                <div class="marco revelar" style="--cor-marco: var(--verde);">
+                    <div class="cabecalho-marco"><span class="tag">#03</span>
+                        <h3>Uma noite qualquer</h3>
+                    </div>
+                    <p>Encontra um portal estranho. Ao atravessá-lo, acorda num laboratório abandonado — o mesmo lugar
+                        onde, décadas antes, toda a história da humanidade mudou de rumo.</p>
+                </div>
+                <div class="marco revelar" style="--cor-marco: var(--pessego);">
+                    <div class="cabecalho-marco"><span class="tag">#04</span>
+                        <h3>Registros que não deveriam existir</h3>
+                    </div>
+                    <p>Invadindo os computadores do local, descobre relatos de uma crise ambiental, econômica e
+                        demográfica que levou os líderes mundiais a colocar a maior parte da população em hibernação
+                        simulada, prometendo acordá-los quando o planeta se recuperasse.</p>
+                </div>
+                <div class="marco revelar" style="--cor-marco: var(--vermelho);">
+                    <div class="cabecalho-marco"><span class="tag">#05</span>
+                        <h3>Quem ficou, e quem foi esquecido</h3>
+                    </div>
+                    <p>Só a elite econômica permaneceu acordada. Com o tempo, preferiram reconstruir um mundo novo a
+                        restaurar o antigo — e abandonaram quem dormia. As máquinas foram reprogramadas para reduzir aos
+                        poucos a expectativa de vida dos hibernados, até que todos morressem sem nunca saber a verdade.
+                    </p>
+                </div>
+                <div class="marco revelar" style="--cor-marco: var(--amarelo);">
+                    <div class="cabecalho-marco"><span class="tag">#06</span>
+                        <h3>O que resta a fazer</h3>
+                    </div>
+                    <p>Ao descobrir a conspiração, o protagonista decide impedi-la. Para libertar os dormentes, precisa
+                        enfrentar os robôs que ainda protegem o laboratório e, no fim, derrotar o computador central que
+                        comanda toda a simulação.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="personagens">
+        <div class="envolucro">
+            <div class="cabecalho revelar"> <span class="rotulo">Elenco</span>
+                <h2>Personagens</h2>
+                <p>Quem o jogador encontra pelo caminho — e quem está por trás de tudo.</p>
+            </div>
+            <div class="grade-personagens">
+                <article class="ficha-personagem cantos revelar" style="--acento: var(--azul);">
+                    <div class="retrato"> <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="24" cy="15" r="8" />
+                            <path d="M8 42c2-11 9-16 16-16s14 5 16 16" />
+                        </svg> </div>
+                    <div class="dados-personagem">
+                        <h3>O Protagonista <span class="badge badge-jogavel">jogável</span></h3> <span
+                            class="tag-classe">struct Protagonista</span>
+                        <p>Pesquisador de 27 anos que decide passar seus últimos anos tentando ajudar as futuras
+                            gerações. Ao atravessar o portal, se torna a única pessoa desperta capaz de expor a verdade
+                            sobre a simulação.</p>
+                    </div>
+                </article>
+                <article class="ficha-personagem cantos revelar" style="--acento: var(--vermelho);">
+                    <div class="retrato"> <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="12" y="10" width="24" height="16" rx="2" />
+                            <circle cx="19" cy="18" r="2" fill="currentColor" stroke="none" />
+                            <circle cx="29" cy="18" r="2" fill="currentColor" stroke="none" />
+                            <rect x="17" y="28" width="14" height="12" rx="1" />
+                        </svg> </div>
+                    <div class="dados-personagem">
+                        <h3>Robôs Guardiões <span class="badge badge-hostil">hostil</span></h3> <span
+                            class="tag-classe">struct RoboGuardiao</span>
+                        <p>Unidades deixadas para proteger os registros da simulação. Impedem o acesso aos arquivos e
+                            enfrentam o protagonista em confrontos resolvidos por lógica condicional.</p>
+                    </div>
+                </article>
+                <article class="ficha-personagem cantos revelar" style="--acento: var(--pessego);">
+                    <div class="retrato"> <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="8" y="8" width="32" height="24" rx="1" />
+                            <path d="M14 32v6M34 32v6M12 38h24" />
+                            <path d="M14 14h20M14 19h14" />
+                        </svg> </div>
+                    <div class="dados-personagem">
+                        <h3>O Computador Central <span class="badge badge-final">chefe final</span></h3> <span
+                            class="tag-classe">struct ComputadorCentral</span>
+                        <p>Reprogramado décadas atrás para reduzir aos poucos a expectativa de vida dos hibernados.
+                            Derrotá-lo é a única forma de libertar todo mundo.</p>
+                    </div>
+                </article>
+                <article class="ficha-personagem cantos revelar" style="--acento: var(--verde);">
+                    <div class="retrato"> <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M30 10a12 12 0 1 0 8 20 10 10 0 0 1-8-20z" />
+                        </svg> </div>
+                    <div class="dados-personagem">
+                        <h3>Os Adormecidos <span class="badge badge-aliado">em espera</span></h3> <span
+                            class="tag-classe">struct Adormecidos</span>
+                        <p>A maior parte da humanidade, colocada em hibernação com a promessa de um mundo restaurado — e
+                            depois abandonada por quem ficou livre. É por eles que o protagonista age.</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+    <section id="sprites">
+        <div class="envolucro">
+            <div class="cabecalho revelar"> <span class="rotulo">Arte do jogo</span>
+                <h2>Sprites</h2>
+                <p>Espaço reservado para a arte pixel art final de cada personagem.</p>
+            </div>
+            <div class="grade-sprites">
+                <div class="cartao-sprite revelar" style="--acento: var(--azul);">
+                    <div class="espaco-sprite-grande">sprite protagonista</div>
+                    <h3>Protagonista</h3> <span class="tag-classe">struct Protagonista</span>
+                </div>
+                <div class="cartao-sprite revelar" style="--acento: var(--vermelho);">
+                    <div class="espaco-sprite-grande">sprite robô</div>
+                    <h3>Robô Guardião</h3> <span class="tag-classe">struct RoboGuardiao</span>
+                </div>
+                <div class="cartao-sprite revelar" style="--acento: var(--verde);">
+                    <div class="espaco-sprite-grande">sprite pessoa encubada</div>
+                    <h3>Pessoa Encubada</h3> <span class="tag-classe">struct Adormecidos</span>
+                </div>
+                <div class="cartao-sprite revelar" style="--acento: var(--pessego);">
+                    <div class="espaco-sprite-grande">sprite boss</div>
+                    <h3>Boss</h3> <span class="tag-classe">struct ComputadorCentral</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="mecanicas">
+        <div class="envolucro">
+            <div class="cabecalho revelar"> <span class="rotulo">Sistema de jogo</span>
+                <h2>Mecânicas</h2>
+                <p>As regras que traduzem a premissa em algo jogável.</p>
+            </div>
+            <div class="grade-mecanicas">
+                <div class="cartao-mecanica cantos revelar" style="--acento: var(--azul);">
+                    <div class="cabecalho-mecanica">
+                        <div class="fn-titulo">while (vida &gt; 0):</div> <span class="conceito">laço</span>
+                    </div>
+                    <h3>Vida em contagem regressiva</h3>
+                    <p>Uma barra vital, sempre visível, lembra o jogador de que o tempo é o recurso mais escasso do jogo
+                        — tanto na história quanto na urgência das decisões.</p>
+                </div>
+                <div class="cartao-mecanica cantos revelar" style="--acento: var(--mauve);">
+                    <div class="cabecalho-mecanica">
+                        <div class="fn-titulo">if (escolha): / else:</div> <span class="conceito">condicional</span>
+                    </div>
+                    <h3>Lógica if — else</h3>
+                    <p>Confrontos com os robôs guardiões são resolvidos por escolhas condicionais: cada decisão certa ou
+                        errada muda o rumo da cena, como uma estrutura de código.</p>
+                </div>
+                <div class="cartao-mecanica cantos revelar" style="--acento: var(--azul);">
+                    <div class="cabecalho-mecanica">
+                        <div class="fn-titulo">for ponto in cenario:</div> <span class="conceito">laço</span>
+                    </div>
+                    <h3>Falhas na simulação</h3>
+                    <p>Estruturas pixeladas e distorcidas aparecem nos cenários, marcando pontos onde a simulação se
+                        rompe — geralmente a entrada de um puzzle ou de uma nova pista.</p>
+                </div>
+                <div class="cartao-mecanica cantos revelar" style="--acento: var(--pessego);">
+                    <div class="cabecalho-mecanica">
+                        <div class="fn-titulo">struct Registro { ... }</div> <span class="conceito">struct</span>
+                    </div>
+                    <h3>Investigação</h3>
+                    <p>Terminais e arquivos espalhados pelo laboratório guardam registros com autor, conteúdo e data — o
+                        jogador reconstrói a verdade juntando essas estruturas em vez de recebê-la pronta.</p>
+                </div>
+                <div class="cartao-mecanica cantos revelar" style="--acento: var(--verde);">
+                    <div class="cabecalho-mecanica">
+                        <div class="fn-titulo">def modo_historia():</div>
+                    </div>
+                    <h3>Modo História</h3>
+                    <p>Um menu separado ("História") permite revisitar a premissa e o contexto do mundo sem precisar
+                        avançar na campanha.</p>
+                </div>
+                <div class="cartao-mecanica cantos revelar" style="--acento: var(--pessego);">
+                    <div class="cabecalho-mecanica">
+                        <div class="fn-titulo">struct ComputadorCentral { ... }</div> <span
+                            class="conceito">struct</span>
+                    </div>
+                    <h3>Confronto final</h3>
+                    <p>O computador central reúne todas as mecânicas anteriores — lógica, laços e o tempo se esgotando —
+                        num único enfrentamento que decide o destino dos adormecidos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer id="rodape">
+        <div class="faixa-skyline"> <svg viewBox="0 0 1400 160" preserveAspectRatio="xMidYMax slice"
+                shape-rendering="crispEdges">
+                <g fill="var(--cidade-meio)" opacity="0.7">
+                    <rect x="0" y="60" width="90" height="100" />
+                    <rect x="120" y="90" width="70" height="70" />
+                    <rect x="260" y="30" width="80" height="130" />
+                    <rect x="1050" y="40" width="85" height="120" />
+                    <rect x="1180" y="80" width="65" height="80" />
+                    <rect x="1300" y="20" width="90" height="140" />
+                </g>
+                <g fill="var(--cidade-perto)">
+                    <rect x="0" y="100" width="200" height="60" />
+                    <rect x="230" y="70" width="130" height="90" />
+                    <rect x="1000" y="70" width="140" height="90" />
+                    <rect x="1220" y="50" width="180" height="110" />
+                </g>
+            </svg>
+            <div class="veu"></div>
+        </div>
+        <div class="envolucro conteudo-rodape">
+            <div class="linha-rodape">
+                <p class="creditos">Ivone Jasmin Quispe Jarro · Ricardo Soci Rehder · Mariah Ismaelita Araújo Marfil
+                    Catelan · Arthur Santos Bereska</p>
+                <p class="assinatura"><span class="prompt">$</span> git log -1 — Projeto de Jogos, Turma 113, IFSP ·
+                    2026</p>
+            </div>
+        </div>
+    </footer>
+    <script>   const linhasBoot = ["$ ./iniciar rem-30.exe", "carregando sujeito_001... <span class=\"ok\">ok</span>"]; const alvoBoot = document.getElementById('boot'); let linhaAtual = 0; function escreverLinha() { if (linhaAtual >= linhasBoot.length) return; const div = document.createElement('div'); alvoBoot.appendChild(div); const texto = linhasBoot[linhaAtual]; const temHtml = texto.includes('<span'); if (temHtml) { div.innerHTML = texto; } else { let i = 0; const digitar = setInterval(() => { div.textContent = texto.slice(0, i + 1); i++; if (i >= texto.length) clearInterval(digitar); }, 24); } linhaAtual++; setTimeout(escreverLinha, temHtml ? 260 : texto.length * 24 + 220); } escreverLinha(); const alvos = document.querySelectorAll('.revelar'); const observador = new IntersectionObserver((entradas) => { entradas.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visivel'); observador.unobserve(e.target); } }); }, { threshold: 0.12 }); alvos.forEach(a => observador.observe(a)); </script>
+</body>
+
+</html>

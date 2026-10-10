@@ -1,3 +1,13 @@
+
+if (empurrao != 0) //empurrão e contadores do dano
+{
+    x += empurrao;
+    empurrao = lerp(empurrao, 0, 0.2);
+    if (abs(empurrao) < 0.5) empurrao = 0;
+}
+if (invulneravel > 0) invulneravel -= 1;
+if (flash > 0) flash -= 1;
+
 var velocidade = 2.5;
 
 if (!place_meeting(x, y, obj_jogador)) {

@@ -1,7 +1,14 @@
 // --- EVENTO DRAW DO obj_inimigo_robo ---
 
 // 1. Desenha o próprio robô no fundo
+
+// fica vermelho enquanto "flash" estiver ativo (ou morrendo)
+if (flash > 0 || morrendo) image_blend = c_red;
+else image_blend = c_white;
+
 draw_self();
+
+image_blend = c_white;   // volta ao normal para não afetar o resto
 
 // 2. Desenha a barra de vida centralizada acima do robô
 if (vida_atual > 0) 
@@ -32,5 +39,5 @@ if (vida_atual > 0)
     
     // Reseta o alinhamento do texto para não afetar outros desenhos do jogo
     draw_set_halign(fa_left);
-    draw_set_valign(fa_top);
+    draw_set_valign(fa_top);   
 }

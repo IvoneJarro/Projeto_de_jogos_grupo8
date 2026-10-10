@@ -98,24 +98,16 @@ if (place_meeting(x, y, obj_porta))
 }
 // --- EVENTO STEP DO obj_jogador ---
 
-// Detecta quando a tecla J é pressionada
-if (keyboard_check_pressed(ord("Q"))) 
+// --- ATAQUE DO JOGADOR (tecla Q) ---
+if (keyboard_check_pressed(ord("Q")))
 {
-    // Verifica se há um robô encostado no jogador no momento do golpe
-    var _inimigo = instance_place(x, y, obj_inimigo_robo);
-    
-    // Se encontrou o robô, aplica o dano
-    if (_inimigo != noone) 
+    // procura um robô 30 pixels à frente de onde o jogador olha
+    var _hit_x = x + (direcao * 30);
+    var _inimigo = instance_place(_hit_x, y, obj_inimigo_robo);
+
+    if (_inimigo != noone)
     {
-        _inimigo.vida_atual -= 20; // Dano do ataque do jogador
+        _inimigo.levar_dano(20, x);   // 20 de dano, empurra para longe do jogador
         show_debug_message("Hit no robô! Vida restante: " + string(_inimigo.vida_atual));
     }
-}
-// Exemplo: Ataca 30 pixels à frente da direção que o jogador está olhando
-var _hit_x = x + (direcao * 30); 
-var _inimigo = instance_place(_hit_x, y, obj_inimigo_robo);
-
-if (keyboard_check_pressed(ord("Q")) && _inimigo != noone) 
-{
-    _inimigo.vida_atual -= 15;
 }

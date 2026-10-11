@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"processar_codigo_c",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"processar_codigo_c",
+  "parent":{
+    "name":"versaoterminal",
+    "path":"versaoterminal.yyp",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

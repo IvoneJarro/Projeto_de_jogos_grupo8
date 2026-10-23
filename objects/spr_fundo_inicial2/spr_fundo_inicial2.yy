@@ -1,0 +1,41 @@
+{
+  "$GMObject":"",
+  "%Name":"spr_fundo_inicial2",
+  "eventList":[],
+  "managed":true,
+  "name":"spr_fundo_inicial2",
+  "overriddenProperties":[],
+  "parent":{
+<<<<<<< HEAD
+    "name":"05_10_JOGO_01.yyz",
+    "path":"05_10_JOGO_01.yyz.yyp",
+=======
+    "name":"versaoterminal",
+    "path":"versaoterminal.yyp",
+>>>>>>> b8389e9b7e45f1bb4cf544134b17da2c2fcfd89d
+  },
+  "parentObjectId":null,
+  "persistent":false,
+  "physicsAngularDamping":0.1,
+  "physicsDensity":0.5,
+  "physicsFriction":0.2,
+  "physicsGroup":1,
+  "physicsKinematic":false,
+  "physicsLinearDamping":0.1,
+  "physicsObject":false,
+  "physicsRestitution":0.1,
+  "physicsSensor":false,
+  "physicsShape":1,
+  "physicsShapePoints":[],
+  "physicsStartAwake":true,
+  "properties":[],
+  "resourceType":"GMObject",
+  "resourceVersion":"2.0",
+  "solid":false,
+  "spriteId":{
+    "name":"Spritefundoinicial2",
+    "path":"sprites/Spritefundoinicial2/Spritefundoinicial2.yy",
+  },
+  "spriteMaskId":null,
+  "visible":true,
+}

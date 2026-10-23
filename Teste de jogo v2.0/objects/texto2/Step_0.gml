@@ -1,0 +1,1 @@
+draw_text(172,87,"E - Atacar(soco)");

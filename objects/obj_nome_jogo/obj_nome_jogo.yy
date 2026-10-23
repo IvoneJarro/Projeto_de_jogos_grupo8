@@ -1,0 +1,41 @@
+{
+  "$GMObject":"",
+  "%Name":"obj_nome_jogo",
+  "eventList":[],
+  "managed":true,
+  "name":"obj_nome_jogo",
+  "overriddenProperties":[],
+  "parent":{
+<<<<<<< HEAD
+    "name":"05_10_JOGO_01.yyz",
+    "path":"05_10_JOGO_01.yyz.yyp",
+=======
+    "name":"versaoterminal",
+    "path":"versaoterminal.yyp",
+>>>>>>> b8389e9b7e45f1bb4cf544134b17da2c2fcfd89d
+  },
+  "parentObjectId":null,
+  "persistent":false,
+  "physicsAngularDamping":0.1,
+  "physicsDensity":0.5,
+  "physicsFriction":0.2,
+  "physicsGroup":1,
+  "physicsKinematic":false,
+  "physicsLinearDamping":0.1,
+  "physicsObject":false,
+  "physicsRestitution":0.1,
+  "physicsSensor":false,
+  "physicsShape":1,
+  "physicsShapePoints":[],
+  "physicsStartAwake":true,
+  "properties":[],
+  "resourceType":"GMObject",
+  "resourceVersion":"2.0",
+  "solid":false,
+  "spriteId":{
+    "name":"nome_jogo",
+    "path":"sprites/nome_jogo/nome_jogo.yy",
+  },
+  "spriteMaskId":null,
+  "visible":true,
+}

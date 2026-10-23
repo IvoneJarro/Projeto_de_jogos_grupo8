@@ -6,19 +6,27 @@
   "option_linux_disable_sandbox":false,
   "option_linux_display_cursor":true,
 <<<<<<< HEAD
+<<<<<<< HEAD
   "option_linux_display_name":"05_10_JOGO",
 =======
   "option_linux_display_name":"Pixel Game",
 >>>>>>> b8389e9b7e45f1bb4cf544134b17da2c2fcfd89d
+=======
+  "option_linux_display_name":"Pixel Game",
+>>>>>>> 3d396b089a168949518769ae4bd39875b3b9fc82
   "option_linux_display_splash":false,
   "option_linux_enable_steam":false,
   "option_linux_homepage":"http://www.yoyogames.com",
   "option_linux_icon":"${base_options_dir}/linux/icons/64.png",
 <<<<<<< HEAD
+<<<<<<< HEAD
   "option_linux_interpolate_pixels":true,
 =======
   "option_linux_interpolate_pixels":false,
 >>>>>>> b8389e9b7e45f1bb4cf544134b17da2c2fcfd89d
+=======
+  "option_linux_interpolate_pixels":false,
+>>>>>>> 3d396b089a168949518769ae4bd39875b3b9fc82
   "option_linux_long_desc":"",
   "option_linux_maintainer_email":"",
   "option_linux_resize_window":false,
@@ -27,10 +35,14 @@
   "option_linux_splash_screen":"${base_options_dir}/linux/splash/splash.png",
   "option_linux_start_fullscreen":false,
 <<<<<<< HEAD
+<<<<<<< HEAD
   "option_linux_sync":true,
 =======
   "option_linux_sync":false,
 >>>>>>> b8389e9b7e45f1bb4cf544134b17da2c2fcfd89d
+=======
+  "option_linux_sync":false,
+>>>>>>> 3d396b089a168949518769ae4bd39875b3b9fc82
   "option_linux_texture_page":"2048x2048",
   "option_linux_version":"1.0.0.0",
   "resourceType":"GMLinuxOptions",

@@ -9,12 +9,17 @@
   "overriddenProperties":[],
   "parent":{
 <<<<<<< HEAD
+<<<<<<< HEAD
     "name":"05_10_JOGO_01.yyz",
     "path":"05_10_JOGO_01.yyz.yyp",
 =======
     "name":"versaoterminal",
     "path":"versaoterminal.yyp",
 >>>>>>> b8389e9b7e45f1bb4cf544134b17da2c2fcfd89d
+=======
+    "name":"versaoterminal",
+    "path":"versaoterminal.yyp",
+>>>>>>> 3d396b089a168949518769ae4bd39875b3b9fc82
   },
   "parentObjectId":null,
   "persistent":false,

@@ -15,19 +15,27 @@
   "option_mac_disable_sandbox":false,
   "option_mac_display_cursor":true,
 <<<<<<< HEAD
+<<<<<<< HEAD
   "option_mac_display_name":"05_10_JOGO",
 =======
   "option_mac_display_name":"Pixel Game",
 >>>>>>> b8389e9b7e45f1bb4cf544134b17da2c2fcfd89d
+=======
+  "option_mac_display_name":"Pixel Game",
+>>>>>>> 3d396b089a168949518769ae4bd39875b3b9fc82
   "option_mac_enable_retina":false,
   "option_mac_enable_steam":false,
   "option_mac_icon_png":"${base_options_dir}/mac/icons/1024.png",
   "option_mac_installer_background_png":"${base_options_dir}/mac/splash/installer_background.png",
 <<<<<<< HEAD
+<<<<<<< HEAD
   "option_mac_interpolate_pixels":true,
 =======
   "option_mac_interpolate_pixels":false,
 >>>>>>> b8389e9b7e45f1bb4cf544134b17da2c2fcfd89d
+=======
+  "option_mac_interpolate_pixels":false,
+>>>>>>> 3d396b089a168949518769ae4bd39875b3b9fc82
   "option_mac_menu_dock":false,
   "option_mac_min_version":"10.10",
   "option_mac_output_dir":"~/gamemakerstudio2",
@@ -40,10 +48,14 @@
   "option_mac_texture_page":"2048x2048",
   "option_mac_version":"1.0.0.0",
 <<<<<<< HEAD
+<<<<<<< HEAD
   "option_mac_vsync":true,
 =======
   "option_mac_vsync":false,
 >>>>>>> b8389e9b7e45f1bb4cf544134b17da2c2fcfd89d
+=======
+  "option_mac_vsync":false,
+>>>>>>> 3d396b089a168949518769ae4bd39875b3b9fc82
   "option_mac_x86_64":true,
   "resourceType":"GMMacOptions",
   "resourceVersion":"2.0",

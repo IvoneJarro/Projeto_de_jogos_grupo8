@@ -6,19 +6,27 @@
   "option_tvos_bundle_name":"com.company.game",
   "option_tvos_display_cursor":false,
 <<<<<<< HEAD
+<<<<<<< HEAD
   "option_tvos_display_name":"05_10_JOGO",
 =======
   "option_tvos_display_name":"Pixel Game",
 >>>>>>> b8389e9b7e45f1bb4cf544134b17da2c2fcfd89d
+=======
+  "option_tvos_display_name":"Pixel Game",
+>>>>>>> 3d396b089a168949518769ae4bd39875b3b9fc82
   "option_tvos_enable_broadcast":false,
   "option_tvos_icon_1280":"${base_options_dir}/tvos/icons/1280.png",
   "option_tvos_icon_400":"${base_options_dir}/tvos/icons/400.png",
   "option_tvos_icon_400_2x":"${base_options_dir}/tvos/icons/400_2x.png",
 <<<<<<< HEAD
+<<<<<<< HEAD
   "option_tvos_interpolate_pixels":true,
 =======
   "option_tvos_interpolate_pixels":false,
 >>>>>>> b8389e9b7e45f1bb4cf544134b17da2c2fcfd89d
+=======
+  "option_tvos_interpolate_pixels":false,
+>>>>>>> 3d396b089a168949518769ae4bd39875b3b9fc82
   "option_tvos_min_version":"10.0",
   "option_tvos_output_dir":"~/GameMakerStudio2/tvOS",
   "option_tvos_podfile_lock_path":"${options_dir}\\tvos\\Podfile.lock",

@@ -7,10 +7,14 @@
   "option_ios_defer_home_indicator":false,
   "option_ios_devices":2,
 <<<<<<< HEAD
+<<<<<<< HEAD
   "option_ios_display_name":"05_10_JOGO",
 =======
   "option_ios_display_name":"Pixel Game",
 >>>>>>> b8389e9b7e45f1bb4cf544134b17da2c2fcfd89d
+=======
+  "option_ios_display_name":"Pixel Game",
+>>>>>>> 3d396b089a168949518769ae4bd39875b3b9fc82
   "option_ios_enable_broadcast":false,
   "option_ios_half_ipad1_textures":false,
   "option_ios_icon_ipad_app_152":"${base_options_dir}/ios/icons/app/ipad_152.png",
@@ -32,10 +36,14 @@
   "option_ios_icon_iphone_spotlight_80":"${base_options_dir}/ios/icons/spotlight/iphone_80.png",
   "option_ios_icon_itunes_artwork_1024":"${base_options_dir}/ios/icons/itunes/itunes_1024.png",
 <<<<<<< HEAD
+<<<<<<< HEAD
   "option_ios_interpolate_pixels":true,
 =======
   "option_ios_interpolate_pixels":false,
 >>>>>>> b8389e9b7e45f1bb4cf544134b17da2c2fcfd89d
+=======
+  "option_ios_interpolate_pixels":false,
+>>>>>>> 3d396b089a168949518769ae4bd39875b3b9fc82
   "option_ios_launchscreen_fill":0,
   "option_ios_launchscreen_image":"${base_options_dir}/ios/splash/launchscreen.png",
   "option_ios_launchscreen_image_landscape":"${base_options_dir}/ios/splash/launchscreen-landscape.png",

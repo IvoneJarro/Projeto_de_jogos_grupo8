@@ -4,16 +4,22 @@
   "AntiAlias":1,
   "applyKerning":0,
 <<<<<<< HEAD
+<<<<<<< HEAD
   "ascender":17,
   "ascenderOffset":0,
 =======
   "ascender":16,
   "ascenderOffset":2,
 >>>>>>> b8389e9b7e45f1bb4cf544134b17da2c2fcfd89d
+=======
+  "ascender":16,
+  "ascenderOffset":2,
+>>>>>>> 3d396b089a168949518769ae4bd39875b3b9fc82
   "bold":false,
   "canGenerateBitmap":true,
   "charset":0,
   "first":0,
+<<<<<<< HEAD
 <<<<<<< HEAD
   "fontName":"Liberation Mono",
   "glyphOperations":0,
@@ -115,6 +121,8 @@
     "126":{"character":126,"h":24,"offset":1,"shift":13,"w":11,"x":162,"y":106,},
     "9647":{"character":9647,"h":24,"offset":4,"shift":20,"w":13,"x":175,"y":106,},
 =======
+=======
+>>>>>>> 3d396b089a168949518769ae4bd39875b3b9fc82
   "fontName":"VTF MisterPixel",
   "glyphOperations":0,
   "glyphs":{
@@ -214,7 +222,10 @@
     "125":{"character":125,"h":23,"offset":1,"shift":11,"w":9,"x":55,"y":27,},
     "126":{"character":126,"h":23,"offset":1,"shift":16,"w":14,"x":72,"y":102,},
     "9647":{"character":9647,"h":23,"offset":4,"shift":20,"w":13,"x":88,"y":102,},
+<<<<<<< HEAD
 >>>>>>> b8389e9b7e45f1bb4cf544134b17da2c2fcfd89d
+=======
+>>>>>>> 3d396b089a168949518769ae4bd39875b3b9fc82
   },
   "hinting":0,
   "includeTTF":false,
@@ -223,6 +234,7 @@
   "kerningPairs":[],
   "last":0,
 <<<<<<< HEAD
+<<<<<<< HEAD
   "lineHeight":24,
   "maintainGms1Font":false,
   "name":"Font1",
@@ -230,13 +242,18 @@
     "name":"05_10_JOGO_01.yyz",
     "path":"05_10_JOGO_01.yyz.yyp",
 =======
+=======
+>>>>>>> 3d396b089a168949518769ae4bd39875b3b9fc82
   "lineHeight":21,
   "maintainGms1Font":false,
   "name":"Font1",
   "parent":{
     "name":"versaoterminal",
     "path":"versaoterminal.yyp",
+<<<<<<< HEAD
 >>>>>>> b8389e9b7e45f1bb4cf544134b17da2c2fcfd89d
+=======
+>>>>>>> 3d396b089a168949518769ae4bd39875b3b9fc82
   },
   "pointRounding":0,
   "ranges":[

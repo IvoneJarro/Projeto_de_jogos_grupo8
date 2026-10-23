@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 if (!ativo)
 {
     exit;
@@ -60,4 +61,19 @@ if (keyboard_check_pressed(vk_enter)) {
     codigo_digitado = "";
     keyboard_string = ""; 
 >>>>>>> b8389e9b7e45f1bb4cf544134b17da2c2fcfd89d
+=======
+
+codigo_digitado = keyboard_string;
+
+if (keyboard_check_pressed(vk_enter)) {
+    
+    var _codigo_limpo = string_trim(codigo_digitado);
+    
+    if (_codigo_limpo != "") {
+        processar_codigo_c(_codigo_limpo);
+    }
+    
+    codigo_digitado = "";
+    keyboard_string = ""; 
+>>>>>>> 3d396b089a168949518769ae4bd39875b3b9fc82
 }

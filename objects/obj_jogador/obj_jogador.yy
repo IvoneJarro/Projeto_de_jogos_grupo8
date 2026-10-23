@@ -7,9 +7,12 @@
     {"$GMEvent":"v1","%Name":"","collisionObjectId":{"name":"obj_transicao","path":"objects/obj_transicao/obj_transicao.yy",},"eventNum":0,"eventType":4,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":64,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
 <<<<<<< HEAD
+<<<<<<< HEAD
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":7,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
 =======
 >>>>>>> b8389e9b7e45f1bb4cf544134b17da2c2fcfd89d
+=======
+>>>>>>> 3d396b089a168949518769ae4bd39875b3b9fc82
   ],
   "managed":true,
   "name":"obj_jogador",
